@@ -17,6 +17,15 @@ function onready() {
                 'failure': onDonateFail
             });
         })
+
+        chrome.runtime.getPlatformInfo(function(info) {
+            if (info.arch == 'arm') {
+                document.getElementById('disablesound').checked = true
+                document.getElementById('armcrash').innerText = "Sound on ARM Chromebook is UNSTABLE. Default Disabled"
+            }
+        })
+
+        
         document.getElementById('launch').addEventListener('click', function(evt) {
             var disablesound = document.getElementById('disablesound').checked
 
