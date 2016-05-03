@@ -20,8 +20,8 @@ function onready() {
 
         chrome.runtime.getPlatformInfo(function(info) {
             if (info.arch == 'arm') {
-                document.getElementById('disablesound').checked = true
-                document.getElementById('armcrash').innerText = "Sound on ARM Chromebook is UNSTABLE. Default Disabled"
+                //document.getElementById('disablesound').checked = false
+                //document.getElementById('armcrash').innerText = "Sound on ARM Chromebook may cause crashes.."
             }
         })
 

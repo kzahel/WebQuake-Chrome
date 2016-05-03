@@ -2,7 +2,7 @@
      "key": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC6ZBSt2PX2520oXWQSOrJXbfCMVmgtBFsAnk0feDkb1rT42aIhym0kENWhICYY1ZD8skCBlpeuFcx4Eo5nlVr+dihyUw9f3Rliik2sHceSJbpyqhT0EjQY0bCvqyh6fEWJBFsKAuuazQlbK9gS7H4Zm4yhTbaH+5CEkVQtVXYVLQIDAQAB",
     "name": "Web Quake",
     "description": "Quake by id Software for Chrome",
-    "version": "0.1.8",
+    "version": "0.1.91",
     "manifest_version": 2,
     "offline_enabled": true,
     "sockets": {
