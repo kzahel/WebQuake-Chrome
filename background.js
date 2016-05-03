@@ -18,8 +18,13 @@ chrome.app.runtime.onLaunched.addListener(function(launchData) {
     }
 })
 
-
+function maybeShutdown() {
+    if (chrome.app.window.getAll().length == 0) {
+        chrome.runtime.reload()
+    }
+}
 function onstarted() {
+    setInterval( maybeShutdown, 10000 )
     chrome.app.window.create('launch.html',
                              { defaultWidth: 512,
                                id:'WebQuake-launch',
