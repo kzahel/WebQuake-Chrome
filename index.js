@@ -22,7 +22,7 @@ function onready() {
     if (params.disablesound == 'true') {
         var args = '-nosound'
     } else {
-        var args = "";
+        var args = "+map e1m4";
     }
     var startupstring = '?' + encodeURIComponent(args)
     var url = 'http://127.0.0.1:'+port+'/WebQuake/Client/WebQuake.htm' + startupstring +'#delay=' +params.delay

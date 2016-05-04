@@ -29,13 +29,32 @@ function onready() {
         document.getElementById('launch').addEventListener('click', function(evt) {
             var disablesound = document.getElementById('disablesound').checked
 
-            chrome.app.window.create('index.html?port=' + bg.app.port + '&delay=' + delay + '&disablesound=' + disablesound,
-                                     { defaultWidth: 512,
-                                       id:'WebQuake',
-                                       defaultHeight: 384  },
-                                     function(w) {
-                                         console.log('quake window created');
-                                     })
+			if (false) {
+				chrome.app.window.create('index.html?port=' + bg.app.port + '&delay=' + delay + '&disablesound=' + disablesound,
+										 { defaultWidth: 640,
+										   id:'WebQuake',
+										   defaultHeight: 480  },
+										 function(w) {
+											 console.log('quake window created');
+										 })
+			} else {
+				if (disablesound) {
+					var params = '?-nosound'
+				} else {
+					var params = ''
+				}
+				chrome.app.window.create('WebQuake-async/Client/WebQuake.htm' + params,
+										 { defaultWidth: 640,
+										   id:'WebQuake',
+										   defaultHeight: 480 },
+										 function(w) {
+											 console.log('quake window created');
+											 w.onClosed.addListener( function() {
+												 
+												 
+											 })
+										 })
+			}
         })
     })
 }

@@ -1,5 +1,5 @@
 [submodule "WebQuake"]
-	path = WebQuake
+	path = WebQuake-sync
 	url = git@github.com:kzahel/WebQuake
 [submodule "web-server-chrome"]
 	path = web-server-chrome
