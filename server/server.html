@@ -1,26 +1,55 @@
-<script src="js/Cmd.js"></script>;
-<script src="js/COM.js"></script>;
-<script src="js/Console.js"></script>;
-<script src="js/CRC.js"></script>;
-<script src="js/Cvar.js"></script>;
-<script src="js/Def.js"></script>;
-<script src="js/ED.js"></script>;
-<script src="js/Host.js"></script>;
-<script src="js/Mod.js"></script>;
-<script src="js/MSG.js"></script>;
-<script src="js/NET.js"></script>;
-<script src="js/NET_Datagram.js"></script>;
-<script src="js/NET_WEBS.js"></script>;
-<script src="js/PF.js"></script>;
-<script src="js/PR.js"></script>;
-<script src="js/Protocol.js"></script>;
-<script src="js/Q.js"></script>;
-<script src="js/SV.js"></script>;
-<script src="js/SyncClientSys.js"></script>;
-<script src="js/SZ.js"></script>;
-<script src="js/V.js"></script>;
-<script src="js/Vec.js"></script>;
+<html style="overflow-y:auto">
+  <head>
+<script src="js/Cmd.js"></script>
+<script src="js/COM.js"></script>
+<script src="js/Console.js"></script>
+<script src="js/CRC.js"></script>
+<script src="js/Cvar.js"></script>
+<script src="js/Def.js"></script>
+<script src="js/ED.js"></script>
+<script src="js/Host.js"></script>
+<script src="js/Mod.js"></script>
+<script src="js/MSG.js"></script>
+<script src="js/NET.js"></script>
+<script src="js/NET_Datagram.js"></script>
+<script src="js/NET_WEBS.js"></script>
+<script src="js/PF.js"></script>
+<script src="js/PR.js"></script>
+<script src="js/Protocol.js"></script>
+<script src="js/Q.js"></script>
+<script src="js/SV.js"></script>
+<script src="js/SyncClientSys.js"></script>
+<script src="js/SZ.js"></script>
+<script src="js/V.js"></script>
+<script src="js/Vec.js"></script>
 <script src="wsc-chrome.min.js"></script>
 <script src="chromenodews.js"></script>
 <script src="buffer.js"></script>
 <script src="server.js"></script>
+  </head>
+  <body style="-webkit-user-select:text">
+	<dialog id="help" style="display:none">
+	  <pre>
+Change map
+  changelevel {mapname}
+    builtin maps are start, e1m1, e1m2, ..., e1m8
+
+To play singleplayer (coop)
+  deathmatch 0
+  coop 1
+  skill 3 (3 is hardest, 1 is easiest)
+  changelevel e1m1
+
+Deathmatch (player vs player)
+  deathmatch 1
+  coop 0
+  changelevel e1m7
+
+	  </pre>
+
+	</dialog>
+	<div id="console" style="border:1px solid black"></div>
+	<input id="input" type="text" /><a href="#" id="showhelp">Command Help</a></span>
+	<div style="background-color:black; color:white" id="server-addresses"></div>
+</body>
+  </html>

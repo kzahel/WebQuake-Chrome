@@ -24,6 +24,7 @@ var reload = function() {
 }
 
 function wait_for_devtools( callback, giveup_after ) {
+	//return callback()
 	giveup_after = giveup_after || 10
 	var start = Date.now()
 	var timeout
@@ -35,7 +36,7 @@ function wait_for_devtools( callback, giveup_after ) {
 		if (triggered) return ''
 		console.log('devtools attached')
 		triggered = true
-		setTimeout(callback, 1) // its actually still not ready, need to do setTimeout
+		setTimeout(callback, 1000) // its actually still not ready, need to do setTimeout
 		return ''
 	}
 	
@@ -52,9 +53,36 @@ function wait_for_devtools( callback, giveup_after ) {
 	checkit()
 }
 
+function showhelp(evt) {
+	var dialog = document.getElementById('help')
+	dialog.style.display = ''
+	dialog.showModal()
+	evt.preventDefault()
+}
+function hidehelp() {
+	var dialog = document.getElementById('help')
+	//dialog.style.display = 'none'
+	dialog.close()
+}
 
 function ondom() {
+	document.getElementById('showhelp').addEventListener('click',showhelp)
+	document.getElementById('help').addEventListener('click',hidehelp)
+	celt = document.getElementById('console')
+	ielt = document.getElementById('input')
 	wait_for_devtools( go )
+
+	ielt.addEventListener('keypress', inputkey)
+}
+
+function inputkey(evt) {
+	//console.log('input',evt.keyCode)
+	if (evt.keyCode == 13) {
+		Sys.cmd = ielt.value + '\n'
+		ielt.value = ''
+	}
+	//var char = String.fromCharCode(evt.keyCode)
+	//Sys.StdinOnData([evt.keyCode])
 }
 
 /*
@@ -105,8 +133,19 @@ function readSync(src, dst, dst_offset, length, src_position) {
 	dst.set(slice, dst_offset)
 }
 
+var celt
 function stdoutwrite(msg) {
 	console.log(msg)
+	if (celt) {
+		var d = document.createElement('div')
+		d.innerText = msg
+		celt.appendChild(d)
+		var obj = document.body
+		if( (obj.scrollHeight - obj.offsetHeight) - obj.scrollTop < 50) {
+            obj.scrollTop = obj.scrollHeight + 1000
+        }
+
+	}
 }
 process = { stdout: { write: stdoutwrite } }
 Node = {
@@ -150,9 +189,11 @@ Sys.framerate = 2.0
 Sys.dedicated = true
 function go() {
 	//Sys.main()
-	readfile('pak0.pak', 'id1/pak0.pak', function() {
-		readfile('pop.lmp','id1/gfx/pop.lmp', function() {
-			Sys.main()
+	readfile('WebQuake-async/Client/id1/pak0.pak', 'id1/pak0.pak', function() {
+		readfile('WebQuake-async/Client/id1/gfx/_pop.lmp', 'id1/gfx/pop.lmp', function() {
+			readfile('server/config.cfg', 'id1/config.cfg', function() {
+				Sys.main()
+			})
 		})
 	})
 	
@@ -160,16 +201,17 @@ function go() {
 
 
 
-function readfile(name, dst, cb) {
-
+function readfile(name, alias, cb) {
+	var path = name.split('/')
 	chrome.runtime.getPackageDirectoryEntry(function(entry) {
-		entry.getFile(name, {create:false}, function(fileentry) {
+		window.packageDir = entry
+		recursiveGetEntryReadOnly(entry, path, function(fileentry) {
 			function onfile(file) {
 				if (file && file.size) {
 					var fr = new FileReader
 					fr.onload = fr.onerror = function(evt) {
 						if (evt.type == 'load') {
-							PAKS[dst] = evt.target.result
+							PAKS[alias] = evt.target.result
 							cb(true)
 						} else {
 							cb(false)
@@ -184,4 +226,49 @@ function readfile(name, dst, cb) {
 			fileentry.file( onfile, onfile )
 		})
 	})
+}
+
+
+
+
+
+
+
+
+
+function recursiveGetEntryReadOnly(root, inpath, callback) {
+	console.log('recurs',root,inpath)
+    var state = {e:root, path:inpath.slice()}
+
+    function recurse(e) {
+        if (! e) {
+            callback({error:"Disk missing"})
+        } else if (state.path.length == 0) {
+            if (e.name == 'TypeMismatchError') {
+                state.e.getDirectory(state.path, {create:false}, recurse, recurse)
+            } else if (e.name == 'NotFoundError') {
+                callback({error:e})
+            } else if (e.isFile) {
+                callback(e)
+            } else if (e.isDirectory) {
+                callback(e)
+            } else {
+                callback({error:'path not found'})
+            }
+        } else if (e.isDirectory) {
+            if (state.path.length > 1) {
+                e.getDirectory(state.path.shift(), {create:false}, recurse, recurse)
+            } else {
+                state.e = e
+                e.getFile(state.path.shift(), {create:false}, recurse, recurse)
+            }
+        } else {
+            if (e.name == 'NotFoundError') {
+                callback({error:e})
+            } else {
+                callback({error:e,mymsg:'file exists'})
+            }
+        }
+    }
+    recurse(root)
 }

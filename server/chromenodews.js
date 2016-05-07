@@ -74,17 +74,39 @@
 		// wrapper for WSC websocket impl
 		this._listeners = {}
 
-
 		var opts = {}
 		opts.port = 26000
 		opts.optAllInterfaces = true
+		opts.optDoPortMapping = true
 		opts.optTryOtherPorts = false
 		opts.optRetryInterfaces = false
+		opts.optBackground = false
 		opts.handlers = []
 		window.webapp = new WSC.WebApplication(opts)
 		webapp.add_handler(['.*', ExampleWebSocketHandler.bind(null,this)])
 		webapp.init_handlers()
-		webapp.start( function(result) { console.log('webapp start result',result) } )
+		webapp.start( function(result) {
+			var selt = document.getElementById('server-addresses')
+			selt.innerHTML = ''
+			var ul = document.createElement('ul')
+			console.log('webapp start result',result)
+			var t = ''
+			for (var i=0; i<webapp.urls.length; i++) {
+				var addr = webapp.urls[i].url.slice('http://'.length, webapp.urls[i].url.length)
+				var li = document.createElement('li')
+				li.innerText = addr
+				ul.appendChild(li)
+			}
+			selt.appendChild(ul)
+			var obj = document.body
+			if( (obj.scrollHeight - obj.offsetHeight) - obj.scrollTop < 50) {
+				obj.scrollTop = obj.scrollHeight + 1000
+			}
+			var lwin = chrome.app.window.get('WebQuake-launch')
+			if (lwin && lwin.contentWindow) {
+				lwin.contentWindow.localServer = true
+			}
+		} )
 	}
 	ChromeNodeWS.prototype = {
 		trigger: function(evt,data) {
