@@ -1,9 +1,6 @@
 [submodule "WebQuake"]
 	path = WebQuake-sync
 	url = git@github.com:kzahel/WebQuake
-[submodule "web-server-chrome"]
-	path = web-server-chrome
-	url = git@github.com:kzahel/web-server-chrome
 [submodule "WebQuake-async"]
 	path = WebQuake-async
 	url = git@bitbucket.org:kzahel/WebQuake
