@@ -24,7 +24,7 @@ var reload = function() {
 }
 
 function wait_for_devtools( callback, giveup_after ) {
-	//return callback()
+	return callback()
 	giveup_after = giveup_after || 10
 	var start = Date.now()
 	var timeout

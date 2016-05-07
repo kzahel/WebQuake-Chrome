@@ -80,6 +80,7 @@
 		opts.optDoPortMapping = true
 		opts.optTryOtherPorts = false
 		opts.optRetryInterfaces = false
+		//WSC.VERBOSE = WSC.DEBUG = 1
 		opts.optBackground = false
 		opts.handlers = []
 		window.webapp = new WSC.WebApplication(opts)
@@ -90,22 +91,27 @@
 			selt.innerHTML = ''
 			var ul = document.createElement('ul')
 			console.log('webapp start result',result)
-			var t = ''
-			for (var i=0; i<webapp.urls.length; i++) {
-				var addr = webapp.urls[i].url.slice('http://'.length, webapp.urls[i].url.length)
-				var li = document.createElement('li')
-				li.innerText = addr
-				ul.appendChild(li)
+			if (result.error) {
+				selt.innerText = JSON.stringify(result.error)
+			} else {
+				var t = ''
+				for (var i=0; i<webapp.urls.length; i++) {
+					var addr = webapp.urls[i].url.slice('http://'.length, webapp.urls[i].url.length)
+					var li = document.createElement('li')
+					li.innerText = addr
+					ul.appendChild(li)
+				}
+				selt.appendChild(ul)
+				var lwin = chrome.app.window.get('WebQuake-launch')
+				if (lwin && lwin.contentWindow) {
+					lwin.contentWindow.localServer = true
+				}
 			}
-			selt.appendChild(ul)
 			var obj = document.body
 			if( (obj.scrollHeight - obj.offsetHeight) - obj.scrollTop < 50) {
 				obj.scrollTop = obj.scrollHeight + 1000
 			}
-			var lwin = chrome.app.window.get('WebQuake-launch')
-			if (lwin && lwin.contentWindow) {
-				lwin.contentWindow.localServer = true
-			}
+
 		} )
 	}
 	ChromeNodeWS.prototype = {
