@@ -21,7 +21,8 @@
     },
     "permissions": [
         {"fileSystem":["write"]},
-	"pointerLock",
+		"pointerLock",
+		"system.network",
         "fullscreen",
         "identity",
         "storage",
