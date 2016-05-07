@@ -1,6 +1,6 @@
 rm package.zip
 
-zip package.zip -r manifest.json *.png *.js *.html WebQuake-async/Client
+zip package.zip -r manifest.json *.png *.js *.html WebQuake-async/Client server
 
 #zip package.zip -r manifest.json *.png *.js *.html WebQuake/Client web-server-chrome/*.js
 

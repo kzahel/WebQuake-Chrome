@@ -14,12 +14,14 @@ Sys.Quit = function()
 Sys.Print = function(text)
 {
     if (window.console != null)
+	if (stdoutwrite) stdoutwrite(text)
 	console.log(text);
 };
 
 Sys.Error = function(text)
 {
 	console.log(text)
+	if (stdoutwrite) stdoutwrite(text)
 	if (Host.initialized === true)
 		Host.Shutdown();
 	throw new Error(text);
@@ -91,3 +93,8 @@ Sys.main = function()
 	//Sys.frame = setInterval(Host.Frame, 1000.0 / Sys.framerate);
 };
 
+
+Sys.StdinOnData = function(data)
+{
+	Sys.cmd += Q.memstr(data);
+};

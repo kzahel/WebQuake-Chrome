@@ -43,6 +43,7 @@ function doserver() {
                                  console.log('server window created');
 								 w.onClosed.addListener( function() {
 									 console.log('server window closed')
+									 localServer = false
 								 })
                              })
 
