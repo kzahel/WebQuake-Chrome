@@ -1,1 +1,1 @@
-shutdown web server on close server window
+- xbox 360 gamepad deadzone problem. maybe when polling if value is unchanged for several frames, call it 0
