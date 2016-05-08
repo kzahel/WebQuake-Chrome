@@ -43,6 +43,7 @@ function onlaunchserver() {
 								 swin.onClosed.addListener( function(evt) {
 									 console.log('server window closed')
 									 localServer = false
+									 deleteServerSockets()
 								 })
 							 })
 }

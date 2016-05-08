@@ -24,6 +24,7 @@ function launch() {
                              })
 }
 function doserver() {
+	// this is only for debugging. look in launch.js for actual server launch
 	var server = chrome.app.window.get('server')
 	if (server) {
 		console.log('closing server window')
@@ -44,6 +45,7 @@ function doserver() {
 								 w.onClosed.addListener( function() {
 									 console.log('server window closed')
 									 localServer = false
+									 deleteServerSockets()
 								 })
                              })
 
