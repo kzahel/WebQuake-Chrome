@@ -10,6 +10,7 @@ Get it in the Chrome Web Store!
 **WebQuake** is an HTML5 WebGL port of the game Quake by id Software.
 
 ### Features added in this fork (kzahel) (https://bitbucket.org/kzahel/webquake)
+* multiplayer server using chrome.sockets and websockets
 * gamepad support
 * restore web audio api
 * remove localStorage
