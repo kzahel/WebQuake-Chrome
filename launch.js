@@ -1,8 +1,31 @@
 document.addEventListener("DOMContentLoaded",onready)
+var reload = chrome.runtime.reload
 var localServer = false
 function getel(id) { return document.getElementById(id) }
 window.delay = 1000
+window.g_retained = []
+window.g_paks = {}
+function onstorage(items) {
+  console.log('storage',items)
+  return
+  if (items.retained) {
+    // restore all retained entries
+    console.log('need to restore entries',items.retained)
+    g_retained = items.retained
+
+    for (var i=0; i<items.retained.length; i++) {
+      var s = items.retained[i]
+      console.log('restore entry',s)
+      chrome.fileSystem.restoreEntry(s, function(entry) {
+        console.log('entry restored',entry)
+        g_paks[entry] = entry
+      })
+    }
+  }
+}
+
 function onready() {
+  chrome.storage.local.get(null, onstorage)
 	setup_events()
     chrome.runtime.getBackgroundPage( function(bg) {
         function onDonate(evt) {
@@ -48,11 +71,42 @@ function onlaunchserver() {
 							 })
 }
 
+function save_store(entry,cb) {
+  function onfile(file) {
+    var fr = new FileReader
+    fr.onload = fr.onerror = function(e) {
+      console.log('read file',e)
+      var buf = e.target.result
+      Store.set(entry.name.toUpperCase(), buf)
+      if (cb) cb()
+    }
+    fr.readAsArrayBuffer(file.slice())
+  }
+
+
+  entry.file( onfile, onfile )
+}
+
+function addpak() {
+  chrome.fileSystem.chooseEntry({type:'openFile',
+                                 acceptsMultiple:false,
+                                 accepts:[{extensions:['pak']}]},
+                                onfile)
+  function onfile(entry) {
+    console.log('got entry',entry)
+    save_store(entry)
+    var s = chrome.fileSystem.retainEntry(entry)
+    g_retained.push(s)
+    chrome.storage.local.set({'retained':g_retained})
+  }
+}
+
 function setup_events() {
 
 	getel('launch-server').addEventListener('click', onlaunchserver)
     
     getel('launch').addEventListener('click', launchQuake)
+    getel('addfiles').addEventListener('click', addpak)
 
 	function keydown(evt) {
         if (evt.metaKey || evt.ctrlKey) {

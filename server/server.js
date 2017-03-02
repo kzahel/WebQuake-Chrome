@@ -187,12 +187,22 @@ var PAKS = {
 //Sys.framerate = 60.0
 Sys.framerate = 2.0
 Sys.dedicated = true
+
+
+function read_user_paks(callback) {
+  // reads pakfiles that user selected
+  // TODO
+  callback()
+}
+
 function go() {
 	//Sys.main()
 	readfile('WebQuake-async/Client/id1/pak0.pak', 'id1/pak0.pak', function() {
 		readfile('WebQuake-async/Client/id1/gfx/_pop.lmp', 'id1/gfx/pop.lmp', function() {
 			readfile('server/config.cfg', 'id1/config.cfg', function() {
-				Sys.main()
+              read_user_paks( function() {
+			    Sys.main()
+              })
 			})
 		})
 	})

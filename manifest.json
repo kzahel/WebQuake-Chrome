@@ -20,7 +20,7 @@
        }
     },
     "permissions": [
-        {"fileSystem":["write"]},
+      {"fileSystem":["write"]},
 		"pointerLock",
 		"system.network",
         "fullscreen",
